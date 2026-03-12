@@ -30,6 +30,7 @@ class TraitsTest extends TestCase
         $post->markAsPublished();
         $this->assertTrue($post->fresh()->isPublished());
 
+
         $this->assertFalse($post->isArchived());
         $post->markAsArchived();
         $this->assertTrue($post->fresh()->isArchived());
