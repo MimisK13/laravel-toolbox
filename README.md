@@ -32,7 +32,6 @@ Adds published/unpublished scopes and helpers using a datetime field (default co
 
 ### `HasMetaData`
 Adds helpers for structured metadata access via an array-cast attribute (default column: `metadata`).
-=======
 `ToolboxServiceProvider` is auto-discovered by Laravel.
 
 If you want to publish package config:
