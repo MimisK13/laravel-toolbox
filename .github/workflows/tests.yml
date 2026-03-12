@@ -26,7 +26,7 @@ jobs:
         run: composer validate --no-check-publish
 
       - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist
+        run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Run tests
         run: composer test

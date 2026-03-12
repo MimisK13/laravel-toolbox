@@ -10,9 +10,15 @@ trait HasMetaData
 {
     public function initializeHasMetaData(): void
     {
-        $this->mergeCasts([
-            $this->getMetaDataColumnName() => 'array',
-        ]);
+        $column = $this->getMetaDataColumnName();
+
+        if (method_exists($this, 'mergeCasts')) {
+            $this->mergeCasts([$column => 'array']);
+
+            return;
+        }
+
+        $this->casts[$column] = 'array';
     }
 
     public function getMeta(string $key, mixed $default = null): mixed
