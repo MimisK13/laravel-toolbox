@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Mimisk\LaravelToolbox\Tests;
 
+use Illuminate\Console\Command;
+
 class MakeActionCommandTest extends TestCase
 {
     public function test_it_creates_an_action_class(): void
@@ -15,7 +17,7 @@ class MakeActionCommandTest extends TestCase
         }
 
         $this->artisan('make:action', ['name' => 'CreateUserAction'])
-            ->assertSuccessful();
+            ->assertExitCode(Command::SUCCESS);
 
         $this->assertFileExists($target);
 
@@ -42,7 +44,7 @@ class MakeActionCommandTest extends TestCase
         }
 
         $this->artisan('make:action', ['name' => 'User/CreateUserAction'])
-            ->assertSuccessful();
+            ->assertExitCode(Command::SUCCESS);
 
         $this->assertFileExists($target);
 
@@ -76,7 +78,9 @@ class MakeActionCommandTest extends TestCase
         file_put_contents($target, "<?php\n");
 
         $this->artisan('make:action', ['name' => 'ExistingAction'])
-            ->assertFailed();
+            ->assertExitCode(Command::FAILURE);
+
+        $this->assertFileExists($target);
 
         unlink($target);
 

@@ -37,11 +37,8 @@ abstract class TestCase extends Orchestra
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
             $table->uuid('uuid')->nullable();
-            $table->string('ulid')->nullable();
             $table->boolean('is_active')->nullable();
             $table->timestamp('published_at')->nullable();
-            $table->timestamp('archived_at')->nullable();
-            $table->integer('sort_order')->nullable();
             $table->json('metadata')->nullable();
             $table->timestamps();
         });
