@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Mimisk\LaravelToolbox;
 
 use Illuminate\Support\ServiceProvider;
-use Mimisk\LaravelToolbox\Commands\MakeActionCommand;
 
 class ToolboxServiceProvider extends ServiceProvider
 {
@@ -16,10 +15,6 @@ class ToolboxServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->commands([
-            MakeActionCommand::class,
-        ]);
-
         $this->publishes([
             __DIR__.'/../config/toolbox.php' => config_path('toolbox.php'),
         ], 'toolbox-config');
