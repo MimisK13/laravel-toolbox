@@ -37,9 +37,26 @@ abstract class TestCase extends Orchestra
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
             $table->uuid('uuid')->nullable();
+            $table->string('ulid', 26)->nullable();
             $table->boolean('is_active')->nullable();
             $table->timestamp('published_at')->nullable();
+            $table->timestamp('archived_at')->nullable();
+            $table->unsignedInteger('sort_order')->nullable();
             $table->json('metadata')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('test_custom_posts', function (Blueprint $table): void {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->string('url_key')->nullable();
+            $table->uuid('public_id')->nullable();
+            $table->string('public_ulid', 26)->nullable();
+            $table->boolean('enabled')->nullable();
+            $table->timestamp('live_at')->nullable();
+            $table->timestamp('retired_at')->nullable();
+            $table->unsignedInteger('position')->nullable();
+            $table->json('meta_payload')->nullable();
             $table->timestamps();
         });
     }
@@ -47,6 +64,7 @@ abstract class TestCase extends Orchestra
     protected function tearDown(): void
     {
         Schema::dropIfExists('test_posts');
+        Schema::dropIfExists('test_custom_posts');
 
         parent::tearDown();
     }

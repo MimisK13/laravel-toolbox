@@ -20,7 +20,15 @@ class MakeActionCommand extends Command
 
     public function handle(): int
     {
-        $name = trim((string) $this->argument('name'));
+        $nameArgument = $this->argument('name');
+
+        if (! is_string($nameArgument)) {
+            $this->error('The name argument must be a string.');
+
+            return self::FAILURE;
+        }
+
+        $name = trim($nameArgument);
         $name = str_replace('\\', '/', $name);
         $name = trim($name, '/');
 
@@ -33,7 +41,7 @@ class MakeActionCommand extends Command
         $segments = array_values(array_filter(explode('/', $name)));
         $className = array_pop($segments);
 
-        if ($className === null || $className === '') {
+        if ($className === null) {
             $this->error('Invalid action name.');
 
             return self::FAILURE;
