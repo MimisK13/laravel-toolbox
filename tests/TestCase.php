@@ -36,6 +36,7 @@ abstract class TestCase extends Orchestra
             $table->id();
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
+            $table->string('code')->nullable();
             $table->uuid('uuid')->nullable();
             $table->string('ulid', 26)->nullable();
             $table->boolean('is_active')->nullable();
@@ -50,6 +51,7 @@ abstract class TestCase extends Orchestra
             $table->id();
             $table->string('name')->nullable();
             $table->string('url_key')->nullable();
+            $table->string('reference')->nullable();
             $table->uuid('public_id')->nullable();
             $table->string('public_ulid', 26)->nullable();
             $table->boolean('enabled')->nullable();

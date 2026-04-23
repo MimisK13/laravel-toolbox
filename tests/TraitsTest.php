@@ -7,6 +7,7 @@ namespace Mimisk\LaravelToolbox\Tests;
 use Illuminate\Database\Eloquent\Model;
 use Mimisk\LaravelToolbox\Traits\HasActiveFlag;
 use Mimisk\LaravelToolbox\Traits\HasArchivedState;
+use Mimisk\LaravelToolbox\Traits\HasCode;
 use Mimisk\LaravelToolbox\Traits\HasMetaData;
 use Mimisk\LaravelToolbox\Traits\HasPublishedState;
 use Mimisk\LaravelToolbox\Traits\HasSlug;
@@ -23,6 +24,7 @@ class TraitsTest extends TestCase
         $this->assertNotEmpty($post->uuid);
         $this->assertNotEmpty($post->ulid);
         $this->assertSame('my-first-post', $post->slug);
+        $this->assertSame('000001', $post->code);
         $this->assertTrue($post->is_active);
         $this->assertSame(1, $post->sort_order);
 
@@ -111,6 +113,8 @@ class TraitsTest extends TestCase
         $postB = TestCustomPost::query()->create(['name' => 'Custom Beta']);
 
         $this->assertSame('custom-alpha', $postA->url_key);
+        $this->assertSame('EVT-1000', $postA->reference);
+        $this->assertSame('EVT-1001', $postB->reference);
         $this->assertNotEmpty($postA->public_id);
         $this->assertNotEmpty($postA->public_ulid);
         $this->assertTrue((bool) $postA->enabled);
@@ -147,12 +151,23 @@ class TraitsTest extends TestCase
             TestCustomPost::query()->ordered()->pluck('position')->all()
         );
     }
+
+    public function test_code_is_not_overwritten_when_provided(): void
+    {
+        $post = TestPost::query()->create([
+            'title' => 'Manual Code',
+            'code' => 'MANUAL-42',
+        ]);
+
+        $this->assertSame('MANUAL-42', $post->code);
+    }
 }
 
 class TestPost extends Model
 {
     use HasActiveFlag;
     use HasArchivedState;
+    use HasCode;
     use HasMetaData;
     use HasPublishedState;
     use HasSlug;
@@ -173,6 +188,7 @@ class TestCustomPost extends Model
 {
     use HasActiveFlag;
     use HasArchivedState;
+    use HasCode;
     use HasMetaData;
     use HasPublishedState;
     use HasSlug;
@@ -197,6 +213,26 @@ class TestCustomPost extends Model
     protected function getSlugSourceColumn(): string
     {
         return 'name';
+    }
+
+    protected function getCodeColumn(): string
+    {
+        return 'reference';
+    }
+
+    protected function getCodePrefix(): string
+    {
+        return 'EVT';
+    }
+
+    protected function getCodePadding(): int
+    {
+        return 4;
+    }
+
+    protected function getCodeStartNumber(): int
+    {
+        return 1000;
     }
 
     protected function getUuidColumn(): string

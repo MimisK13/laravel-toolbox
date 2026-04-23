@@ -24,6 +24,7 @@ Laravel auto-discovers the package service provider.
 | Trait | Required Columns (default) | Custom method |
 | --- | --- | --- |
 | `HasSlug` | `slug` + source column `title` | `getSlugColumn()`, `getSlugSourceColumn()` |
+| `HasCode` | `code` | `getCodeColumn()`, `getCodePrefix()`, `getCodeSeparator()`, `getCodePadding()`, `getCodeStartNumber()` |
 | `HasUuid` | `uuid` | `getUuidColumn()` |
 | `HasUlid` | `ulid` | `getUlidColumn()` |
 | `HasActiveFlag` | `is_active` (boolean) | `getActiveFlagColumn()` |
@@ -47,6 +48,28 @@ class Post extends Model
     protected function getSlugSourceColumn(): string
     {
         return 'name';
+    }
+}
+```
+
+### `HasCode`
+Automatically generates incremental codes on model creation (default column: `code`, default format: `000001`, `000002`, ...).
+
+```php
+use Mimisk\LaravelToolbox\Traits\HasCode;
+
+class Invoice extends Model
+{
+    use HasCode;
+
+    protected function getCodePrefix(): string
+    {
+        return 'INV';
+    }
+
+    protected function getCodePadding(): int
+    {
+        return 5;
     }
 }
 ```
